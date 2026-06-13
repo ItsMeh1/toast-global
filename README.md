@@ -40,18 +40,27 @@ toast.show({
 You can easily mix & match styles to match your needs.
 ```javascript
 toast.show({
-  message: "Connection established safely.",
-  type: "info",      // 'info' | 'success' | 'warning' | 'error'
-  theme: "glass",    // 'basic' | 'glass' | 'retro' | 'cyber'
-  duration: 5000     // Duration in milliseconds
+  message: "System upgraded!", // The alert text to display
+  type: "success",             // Alert type: 'info' | 'success' | 'warning' | 'error'
+  theme: "stealth",            // Look: 'basic' | 'glass' | 'retro' | 'cyber' | 'stealth' | 'brutalist' | 'sunset'
+  position: "top-right",       // Corner: 'top-right/left/center' or 'bottom-right/left/center'
+  duration: 5000,              // Time in milliseconds before disappearing (0 = stays forever)
+  dismissible: true,           // Shows (true) or hides (false) the close 'X' button
+  pauseOnHover: true,          // Pauses the timer countdown when mouse hovers over it
+  onClick: (e, t) => {}        // Function that triggers when someone clicks the toast
 });
 ```
 > [!TIP]
 > It is recommended to explore styles since there are many, and new ones are added many times.
 - `message` The message you want the toast to show.
 - `type` The type of notification it is. Either info, success, a warning, or an error.
-- `theme` The theme of the toast. You can change this to match your site's style.
+- `theme` The theme of the toast. You can change this to match your site's style. Many more are being added.
+- `position` The toast's position on the screen.
 - `duration` The amount of time, in milliseconds, the toast will remain showing. 1 second = 1000 milliseconds.
+- `dismissible` Whether you can or can't dismiss the toast notification.
+- `pauseOnHover` Wheather or not the duration timer will pause when the user hovers over the toast notification.
+- `onClick` A customizable function you can run when the user clicks the toast.
 
 ##
 Created with ❤️ by ItsMeh1
+`version 1.8`
