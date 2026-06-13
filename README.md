@@ -63,4 +63,5 @@ toast.show({
 
 ##
 Created with ❤️ by ItsMeh1
+<br>
 `version 1.8`
