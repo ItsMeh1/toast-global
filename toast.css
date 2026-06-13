@@ -1,17 +1,24 @@
-/* --- Core Toast Container & Base Layout --- */
+/* --- Multi-Position Containers --- */
 .toast-container {
   position: fixed;
-  top: 20px;
-  right: 20px;
   z-index: 9999;
   display: flex;
   flex-direction: column;
   gap: 12px;
   pointer-events: none;
   max-width: 350px;
-  width: 100%;
+  width: calc(100% - 40px);
 }
 
+/* Positioning Rules */
+.toast-container.top-right    { top: 20px; right: 20px; }
+.toast-container.top-left     { top: 20px; left: 20px; }
+.toast-container.top-center   { top: 20px; left: 50%; transform: translateX(-50%); }
+.toast-container.bottom-right { bottom: 20px; right: 20px; }
+.toast-container.bottom-left  { bottom: 20px; left: 20px; }
+.toast-container.bottom-center{ bottom: 20px; left: 50%; transform: translateX(-50%); }
+
+/* --- Base Toast Layout --- */
 .toast {
   padding: 16px;
   border-radius: 8px;
@@ -23,20 +30,25 @@
   justify-content: space-between;
   gap: 12px;
   pointer-events: auto;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   opacity: 0;
-  transform: translateX(100px);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
+
+/* Entry/Exit Animations based on position */
+.toast-container.top-right .toast, .toast-container.bottom-right .toast { transform: translateX(100px); }
+.toast-container.top-left .toast, .toast-container.bottom-left .toast { transform: translateX(-100px); }
+.toast-container.top-center .toast { transform: translateY(-50px); }
+.toast-container.bottom-center .toast { transform: translateY(50px); }
 
 .toast.show {
   opacity: 1;
-  transform: translateX(0);
+  transform: translate(0) !important;
 }
 
 .toast.hide {
   opacity: 0;
-  transform: translateY(-20px);
+  transform: scale(0.9) !important;
 }
 
 .toast-close {
@@ -44,68 +56,72 @@
   border: none;
   font-size: 18px;
   cursor: pointer;
-  opacity: 0.6;
+  opacity: 0.5;
   padding: 0 4px;
   line-height: 1;
+  transition: opacity 0.2s;
 }
+.toast-close:hover { opacity: 1; }
 
-.toast-close:hover {
-  opacity: 1;
-}
+/* ==========================================================================
+   THEMES (Legacy + New)
+   ========================================================================== */
 
-/* --- Theme 1: Basic / Modern Standard --- */
-.toast-theme-basic {
-  background-color: #ffffff;
-  color: #333333;
-  border-left: 4px solid #3b82f6;
-}
+/* --- Theme 1: Basic --- */
+.toast-theme-basic { background: #ffffff; color: #1f2937; border-left: 4px solid #3b82f6; }
 .toast-theme-basic.toast-success { border-left-color: #10b981; }
 .toast-theme-basic.toast-error { border-left-color: #ef4444; }
 .toast-theme-basic.toast-warning { border-left-color: #f59e0b; }
 
-/* --- Theme 2: Liquid Glass (Glassmorphism) --- */
+/* --- Theme 2: Glass --- */
 .toast-theme-glass {
   background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: #ffffff;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25); color: #ffffff;
 }
 .toast-theme-glass .toast-close { color: #ffffff; }
 
-/* --- Theme 3: Retro / 90s Desktop --- */
+/* --- Theme 3: Retro --- */
 .toast-theme-retro {
-  background: #c0c0c0;
-  color: #000000;
-  border: 2px solid;
-  border-color: #fff #808080 #808080 #fff;
-  font-family: "MS Sans Serif", Geneva, sans-serif;
-  border-radius: 0;
-  box-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+  background: #c0c0c0; color: #000000; border: 2px solid; border-color: #fff #808080 #808080 #fff;
+  font-family: "MS Sans Serif", Geneva, sans-serif; border-radius: 0;
 }
-.toast-theme-retro .toast-close {
-  background: #c0c0c0;
-  border: 1px solid;
-  border-color: #fff #808080 #808080 #fff;
-  font-size: 10px;
-  padding: 2px 4px;
-}
+.toast-theme-retro .toast-close { background: #c0c0c0; border: 1px solid; border-color: #fff #808080 #808080 #fff; font-size: 10px; }
 
-/* --- Theme 4: Cyberpunk / Neon --- */
-.toast-theme-cyber {
-  background: #000000;
-  color: #00ff66;
-  border: 1px solid #00ff66;
-  font-family: 'Courier New', Courier, monospace;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
-  border-radius: 0;
-}
-.toast-theme-cyber.toast-error {
-  color: #ff0055;
-  border-color: #ff0055;
-  box-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
-}
+/* --- Theme 4: Cyberpunk --- */
+.toast-theme-cyber { background: #000; color: #00ff66; border: 1px solid #00ff66; font-family: monospace; border-radius: 0; text-transform: uppercase; }
+.toast-theme-cyber.toast-error { color: #ff0055; border-color: #ff0055; }
 .toast-theme-cyber .toast-close { color: inherit; }
+
+/* 🔥 NEW Theme 5: Stealth (Matte Dark Mode) 🔥 */
+.toast-theme-stealth {
+  background: #121214;
+  color: #e4e4e7;
+  border: 1px solid #27272a;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.toast-theme-stealth.toast-success { color: #34d399; border-color: rgba(52, 211, 153, 0.2); }
+.toast-theme-stealth.toast-error { color: #f87171; border-color: rgba(248, 113, 113, 0.2); }
+.toast-theme-stealth .toast-close { color: #a1a1aa; }
+
+/* 🔥 NEW Theme 6: Neo-Brutalist 🔥 */
+.toast-theme-brutalist {
+  background: #feff9c;
+  color: #000000;
+  border: 3px solid #000000;
+  border-radius: 0;
+  font-weight: 700;
+  box-shadow: 5px 5px 0px #000000;
+}
+.toast-theme-brutalist.toast-success { background: #67ff93; }
+.toast-theme-brutalist.toast-error { background: #ff6b6b; }
+.toast-theme-brutalist .toast-close { font-weight: 900; color: #000; }
+
+/* 🔥 NEW Theme 7: Pastel Sunset 🔥 */
+.toast-theme-sunset {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+  color: #4a2840;
+  font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.4);
+}
+.toast-theme-sunset .toast-close { color: #4a2840; }
