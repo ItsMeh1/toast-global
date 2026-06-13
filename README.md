@@ -10,13 +10,20 @@ In this repo, click the green `Code` button and click `Download ZIP`. An alterna
 git clone https://github.com/ItsMeh1/toast-global.git
 ```
 
-### 1. Include the assets
-Link the CSS in your `<head>` and load the JavaScript at the bottom of your `<body>`.
+### 2. Include the assets
+> [!WARNING]
+> If you did **not** place the `toast-global` package inside of your root directory, then link the CSS and Javascript to the file's actual path.
+
+Link the CSS in your `<head>`
 
 ```html
 <link rel="stylesheet" href="/toast-global/toast.css">
+```
+Load the Javascript at the end of your `<body>`
+```html
 <script src="/toast-global/toast.js"></script>
 ```
+If you followed those steps correctly, then you should have successfully linked the `toast-global` assets to your project.
 ## ⚙️ Usage
 
 ### 1. Triggering a toast anywhere
@@ -39,9 +46,12 @@ toast.show({
   duration: 5000     // Duration in milliseconds
 });
 ```
+> [!TIP]
+> It is recommended to explore styles since there are many, and new ones are added many times.
 - `message` The message you want the toast to show.
 - `type` The type of notification it is. Either info, success, a warning, or an error.
 - `theme` The theme of the toast. You can change this to match your site's style.
 - `duration` The amount of time, in milliseconds, the toast will remain showing. 1 second = 1000 milliseconds.
 
+##
 Created with ❤️ by ItsMeh1
