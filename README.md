@@ -61,7 +61,11 @@ toast.show({
 - `pauseOnHover` Wheather or not the duration timer will pause when the user hovers over the toast notification.
 - `onClick` A customizable function you can run when the user clicks the toast.
 
+You can also use these variables which are **not** required, but give you high levels of customization.
+- `color` Overrides the toast's color. Must be a HEX code & must be passed as a string.
+- `icon` Overrides the toast's icon. Must be a Lucide icon & must be passed as a string.
+
 ##
-Created with ❤️ by ItsMeh1
+Created with ❤️ by ItsMeh1. Uses Lucide Icons.
 <br>
-`version 1.8`
+`version 1.9`
