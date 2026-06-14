@@ -42,7 +42,7 @@ You can easily mix & match styles to match your needs.
 toast.show({
   message: "System upgraded!", // The alert text to display
   type: "success",             // Alert type: 'info' | 'success' | 'warning' | 'error'
-  theme: "stealth",            // Look: 'basic' | 'glass' | 'retro' | 'cyber' | 'stealth' | 'brutalist' | 'sunset'
+  theme: "stealth",            // Look: 'basic' | 'glass' | 'retro' | 'cyber' | 'stealth' | 'brutalist' | 'sunset' | 'arcade' | 'bubblegum' | 'hologram'
   position: "top-right",       // Corner: 'top-right/left/center' or 'bottom-right/left/center'
   duration: 5000,              // Time in milliseconds before disappearing (0 = stays forever)
   dismissible: true,           // Shows (true) or hides (false) the close 'X' button
@@ -65,6 +65,69 @@ You can also use these variables which are **not** required, but give you high l
 - `color` Overrides the toast's color. Must be a HEX code & must be passed as a string.
 - `icon` Overrides the toast's icon. Must be a Lucide icon & must be passed as a string.
 
+> [!TIP]
+> You can also ask the user questions & recieve responses with the `onAnswer()` extension.
+
+```javascript
+toast.show({
+  message: "Choose an answer",
+  type: "warning",
+  theme: "arcade",       // The new flash-style theme!
+  position: "top-center",
+  duration: 0,           // 0 means it waits for their answer
+  dismissible: false,    // Force them to click an answer
+  icon: "skull",         // Custom skull icon
+
+  // The buttons you want to show. Each one is going to be an answer that the user can choose. The 1st answers index is 1, then 2, and so on so forth.
+  answers: ["Yes", "No", "Maybe"],
+
+  // The function that runs when they click a button
+  onAnswer: (index) => {
+    if (index === 1) {
+      console.log("User clicked YES.");
+      // Run your rebirth code here
+    } 
+    else if (index === 2) {
+      console.log("User clicked NO.");
+    } 
+    else if (index === 3) {
+      console.log("User clicked MAYBE.");
+    }
+  }
+});
+```
+The way to initiate a prompt is simple. First, use the message variable to set the question.
+```javascript
+message: "Whatever your question is, it goes here!"
+```
+Then you can create the answers with the answer variable.
+```javascript
+answers: ["Answer #1, Index #1", "Answer #2, Index #2", "Answer #3, Index #3"]
+```
+You can then detect when an answer is selected with teh onAnswer function. This function only runs when the user clicks one of the answer buttons.
+>[!TIP]
+>The index number of the answer is the answers number in the answers table. For example, in the following answers table:
+>```javascript
+>answers: ["yes", "no", "maybe"]
+>```
+>The answer `yes` is index #1 since it is the first answer in the table.
+
+A working onAnswer function looks like this. You can use if statements to figure out which button was clicked, and call your own functions off of that.
+```javascript
+  onAnswer: (index) => {
+    if (index === 1) {
+      console.log("User clicked YES.");
+      // Run your rebirth code here
+    } 
+    else if (index === 2) {
+      console.log("User clicked NO.");
+    } 
+    else if (index === 3) {
+      console.log("User clicked MAYBE.");
+    }
+  }
+```
+Thanks for using `toast-global`! You can test & play around with settings at the [`toast-global` playground.](https://itsmeh1.github.io/toast-global/)
 ##
 Created with ❤️ by ItsMeh1. Uses Lucide Icons.
 <br>
