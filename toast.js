@@ -4,15 +4,12 @@ class ToastSystem {
     this._loadLucide();
   }
 
-  // Inject Lucide icons script into the head automatically
   _loadLucide() {
     if (!document.getElementById('lucide-cdn')) {
       const script = document.createElement('script');
       script.id = 'lucide-cdn';
       script.src = 'https://unpkg.com/lucide@latest';
-      script.onload = () => {
-        if (window.lucide) window.lucide.createIcons();
-      };
+      script.onload = () => { if (window.lucide) window.lucide.createIcons(); };
       document.head.appendChild(script);
     }
   }
@@ -30,7 +27,6 @@ class ToastSystem {
     return this.containers[position];
   }
 
-  // Default fallback icons mapping
   _getIconName(type) {
     switch(type) {
       case 'success': return 'check-circle-2';
@@ -40,20 +36,6 @@ class ToastSystem {
     }
   }
 
-  /**
-   * Fire a toast notification
-   * @param {Object} options
-   * @param {string} options.message
-   * @param {string} [options.type='info']
-   * @param {string} [options.theme='basic']
-   * @param {string} [options.position='top-right']
-   * @param {number} [options.duration=4000]
-   * @param {boolean} [options.dismissible=true]
-   * @param {boolean} [options.pauseOnHover=true]
-   * @param {Function} [options.onClick=null]
-   * @param {string} [options.icon=null] - Overrides default icon with any Lucide icon name (e.g., 'zap', 'heart')
-   * @param {string} [options.color=null] - Overrides default type colors with any valid CSS color (hex, rgb, etc.)
-   */
   show({
     message,
     type = 'info',
@@ -64,53 +46,53 @@ class ToastSystem {
     pauseOnHover = true,
     onClick = null,
     icon = null,
-    color = null
+    color = null,
+    answers = [],      // NEW: Array of strings for buttons like ["Yes", "No"]
+    onAnswer = null    // NEW: Function to run when a button is clicked
   }) {
     const container = this._getContainer(position);
     const toast = document.createElement('div');
     
     toast.className = `toast toast-theme-${theme} toast-${type}`;
-    if (onClick) toast.style.cursor = 'pointer';
+    if (onClick && answers.length === 0) toast.style.cursor = 'pointer';
 
-    // 🌟 OVERRIDE LOGIC: Use custom icon if provided, otherwise fallback to type icon
     const iconName = icon || this._getIconName(type);
 
-    // Build toast structure
+    // Build the Answer Buttons HTML if they exist
+    let answersHtml = '';
+    if (answers && answers.length > 0) {
+      answersHtml = `<div class="toast-prompt-actions">` +
+        answers.map((ans, index) => 
+          // data-index is +1 so it matches your requirement (1 for first button, 2 for second, etc.)
+          `<button class="toast-prompt-btn" data-index="${index + 1}">${ans}</button>`
+        ).join('') +
+      `</div>`;
+    }
+
     toast.innerHTML = `
       <div class="toast-content">
-        <div class="toast-icon"><i data-lucide="${iconName}"></i></div>
-        <span class="toast-text">${message}</span>
+        <div class="toast-header">
+          <div class="toast-icon"><i data-lucide="${iconName}"></i></div>
+          <span class="toast-text">${message}</span>
+        </div>
+        ${answersHtml}
       </div>
       ${dismissible ? '<button class="toast-close" aria-label="Close"><i data-lucide="x" style="width:16px;height:16px;"></i></button>' : ''}
     `;
 
-    // 🌟 OVERRIDE LOGIC: Apply custom colors dynamically if provided
     if (color) {
-      // Direct borders (Basic, Stealth, etc.)
       toast.style.borderColor = color;
-      toast.style.borderLeftColor = color;
-      
-      // Target the icon container specifically
       const iconWrapper = toast.querySelector('.toast-icon');
       if (iconWrapper) iconWrapper.style.color = color;
-
-      // Handle custom glowing/tinted effects if using the Glass theme
-      if (theme === 'glass') {
-        toast.style.background = `linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01))`;
-        toast.style.border = `1px solid ${color}4d`; // Adds 30% alpha transparency to the hex border
-        toast.style.boxShadow = `0 8px 32px 0 ${color}26`; // Adds 15% alpha transparency to the glow shadow
-      }
     }
 
     container.appendChild(toast);
 
-    // Process newly appended icons with Lucide
-    if (window.lucide) {
-      window.lucide.createIcons({ attrs: { 'stroke-width': 2.25 } });
-    }
+    if (window.lucide) window.lucide.createIcons({ attrs: { 'stroke-width': 2.25 } });
 
     setTimeout(() => toast.classList.add('show'), 10);
 
+    // Timer logic
     let remainingTime = duration;
     let startTime = Date.now();
     let dismissTimeout = null;
@@ -134,6 +116,19 @@ class ToastSystem {
       toast.addEventListener('mouseleave', startTimer);
     }
 
+    // Attach button click listeners for the prompts
+    if (answers.length > 0 && onAnswer) {
+      const btns = toast.querySelectorAll('.toast-prompt-btn');
+      btns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation(); // Stops the main toast click event
+          const index = parseInt(btn.getAttribute('data-index'), 10);
+          onAnswer(index, toast); // Fires your function with index 1, 2, or 3!
+          this.dismiss(toast);    // Automatically closes the toast after they answer
+        });
+      });
+    }
+
     if (dismissible) {
       const closeBtn = toast.querySelector('.toast-close');
       closeBtn.addEventListener('click', (e) => {
@@ -142,7 +137,7 @@ class ToastSystem {
       });
     }
 
-    if (onClick) {
+    if (onClick && answers.length === 0) {
       toast.addEventListener('click', (e) => onClick(e, toast));
     }
   }
