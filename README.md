@@ -127,6 +127,10 @@ A working onAnswer function looks like this. You can use if statements to figure
     }
   }
 ```
+>[!TIP]
+>Toasts automatically go away on button click. If you want a toast to remain on the users screen until they answer, then you can set the duration to 0, and the system will automatically handle everything else.
+
+
 Thanks for using `toast-global`! You can test & play around with settings at the [`toast-global` playground.](https://itsmeh1.github.io/toast-global/)
 ##
 Created with ❤️ by ItsMeh1. Uses Lucide Icons.
