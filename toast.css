@@ -1,59 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Press+Start+2P&display=swap');
 
 /* --- Multi-Position Containers --- */
 .toast-container {
-  position: fixed;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  pointer-events: none;
-  max-width: 380px;
-  width: calc(100% - 40px);
+  position: fixed; z-index: 9999; display: flex; flex-direction: column;
+  gap: 12px; pointer-events: none; max-width: 380px; width: calc(100% - 40px);
 }
-
-/* Positioning Rules */
-.toast-container.top-right    { top: 20px; right: 20px; }
-.toast-container.top-left     { top: 20px; left: 20px; }
-.toast-container.top-center   { top: 20px; left: 50%; transform: translateX(-50%); }
+.toast-container.top-right { top: 20px; right: 20px; }
+.toast-container.top-left { top: 20px; left: 20px; }
+.toast-container.top-center { top: 20px; left: 50%; transform: translateX(-50%); }
 .toast-container.bottom-right { bottom: 20px; right: 20px; }
-.toast-container.bottom-left  { bottom: 20px; left: 20px; }
-.toast-container.bottom-center{ bottom: 20px; left: 50%; transform: translateX(-50%); }
+.toast-container.bottom-left { bottom: 20px; left: 20px; }
+.toast-container.bottom-center { bottom: 20px; left: 50%; transform: translateX(-50%); }
 
 /* --- Base Toast Layout --- */
 .toast {
-  padding: 14px 18px;
-  border-radius: 12px;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.5;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  pointer-events: auto;
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
-  opacity: 0;
-  transition: all 0.35s cubic-bezier(0.215, 0.610, 0.355, 1);
+  padding: 14px 18px; border-radius: 12px; font-family: 'Inter', sans-serif;
+  font-size: 14px; font-weight: 500; line-height: 1.5; display: flex;
+  align-items: flex-start; justify-content: space-between; gap: 14px;
+  pointer-events: auto; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+  opacity: 0; transition: all 0.35s cubic-bezier(0.215, 0.610, 0.355, 1);
 }
 
-/* Inner alignment for icons and text */
-.toast-content {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 1;
-}
-
-.toast-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-}
+.toast-content { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.toast-header { display: flex; align-items: center; gap: 12px; }
+.toast-icon { display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 20px; height: 20px; }
 
 /* Animations */
 .toast-container.top-right .toast, .toast-container.bottom-right .toast { transform: translateX(40px) scale(0.95); }
@@ -61,92 +31,71 @@
 .toast-container.top-center .toast { transform: translateY(-30px) scale(0.95); }
 .toast-container.bottom-center .toast { transform: translateY(30px) scale(0.95); }
 
-.toast.show {
-  opacity: 1;
-  transform: translate(0) scale(1) !important;
-}
-
-.toast.hide {
-  opacity: 0;
-  transform: scale(0.9) !important;
-}
+.toast.show { opacity: 1; transform: translate(0) scale(1) !important; }
+.toast.hide { opacity: 0; transform: scale(0.9) !important; }
 
 .toast-close {
-  background: none;
-  border: none;
-  cursor: pointer;
-  opacity: 0.4;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.2s, transform 0.2s;
-  color: inherit;
+  background: none; border: none; cursor: pointer; opacity: 0.4; padding: 4px;
+  display: flex; align-items: center; justify-content: center; transition: all 0.2s; color: inherit;
 }
 .toast-close:hover { opacity: 1; transform: scale(1.05); }
 
+/* --- Prompt Buttons --- */
+.toast-prompt-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; margin-left: 32px; }
+.toast-prompt-btn {
+  padding: 6px 14px; border-radius: 6px; font-family: inherit; font-size: 13px;
+  font-weight: 600; cursor: pointer; transition: all 0.2s; background: rgba(0,0,0,0.1);
+  border: 1px solid rgba(0,0,0,0.1); color: inherit;
+}
+.toast-prompt-btn:hover { background: rgba(0,0,0,0.2); transform: translateY(-1px); }
+.toast-prompt-btn:active { transform: translateY(1px); }
+
 /* ==========================================================================
-   THEMES
+   THEMES (Legacy + 3 more)
    ========================================================================== */
-
-/* --- Theme 1: Basic (Modern Minimalist) --- */
 .toast-theme-basic { background: #ffffff; color: #1e293b; border: 1px solid #e2e8f0; }
-.toast-theme-basic.toast-info .toast-icon { color: #3b82f6; }
-.toast-theme-basic.toast-success .toast-icon { color: #10b981; }
-.toast-theme-basic.toast-warning .toast-icon { color: #f59e0b; }
-.toast-theme-basic.toast-error .toast-icon { color: #ef4444; }
-
-/* 🌟 Theme 2: Upgraded Liquid Glass (Now responds to types via distinct glowing borders & tints) 🌟 */
-.toast-theme-glass {
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  color: #ffffff;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-}
-.toast-theme-glass.toast-info {
-  background: rgba(59, 130, 246, 0.1);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  box-shadow: 0 8px 32px 0 rgba(59, 130, 246, 0.15);
-}
-.toast-theme-glass.toast-success {
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  box-shadow: 0 8px 32px 0 rgba(16, 185, 129, 0.15);
-}
-.toast-theme-glass.toast-warning {
-  background: rgba(245, 158, 11, 0.1);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  box-shadow: 0 8px 32px 0 rgba(245, 158, 11, 0.15);
-}
-.toast-theme-glass.toast-error {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  box-shadow: 0 8px 32px 0 rgba(239, 68, 68, 0.15);
-}
-.toast-theme-glass .toast-icon { color: #ffffff !important; }
-
-/* --- Theme 3: Retro --- */
-.toast-theme-retro {
-  background: #c0c0c0; color: #000000; border: 2px solid; border-color: #fff #808080 #808080 #fff;
-  font-family: "MS Sans Serif", Geneva, sans-serif; border-radius: 0; font-size: 12px;
-}
-.toast-theme-retro .toast-close { background: #c0c0c0; border: 1px solid; border-color: #fff #808080 #808080 #fff; }
-
-/* --- Theme 4: Cyberpunk --- */
-.toast-theme-cyber { background: #000; color: #00ff66; border: 1px solid #00ff66; font-family: monospace; border-radius: 0; text-transform: uppercase; box-shadow: 0 0 10px rgba(0, 255, 102, 0.3); }
-.toast-theme-cyber.toast-error { color: #ff0055; border-color: #ff0055; box-shadow: 0 0 10px rgba(255, 0, 85, 0.3); }
-
-/* --- Theme 5: Stealth --- */
+.toast-theme-glass { backdrop-filter: blur(16px) saturate(180%); color: #ffffff; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 8px 32px 0 rgba(0,0,0,0.15); }
+.toast-theme-retro { background: #c0c0c0; color: #000; border: 2px solid; border-color: #fff #808080 #808080 #fff; border-radius: 0; }
+.toast-theme-retro .toast-prompt-btn { background: #c0c0c0; border: 2px solid; border-color: #fff #808080 #808080 #fff; border-radius: 0; box-shadow: none; }
+.toast-theme-retro .toast-prompt-btn:active { border-color: #808080 #fff #fff #808080; }
+.toast-theme-cyber { background: #000; color: #0ff; border: 1px solid #0ff; font-family: monospace; border-radius: 0; text-transform: uppercase; }
+.toast-theme-cyber .toast-prompt-btn { background: #000; color: #0ff; border: 1px solid #0ff; text-transform: uppercase; }
+.toast-theme-cyber .toast-prompt-btn:hover { background: #0ff; color: #000; }
 .toast-theme-stealth { background: #0f172a; color: #f1f5f9; border: 1px solid #334155; }
-.toast-theme-stealth.toast-info .toast-icon { color: #60a5fa; }
-.toast-theme-stealth.toast-success .toast-icon { color: #34d399; }
-.toast-theme-stealth.toast-warning .toast-icon { color: #fbbf24; }
-.toast-theme-stealth.toast-error .toast-icon { color: #f87171; }
+.toast-theme-stealth .toast-prompt-btn { background: #1e293b; border-color: #475569; color: #f1f5f9; }
+.toast-theme-brutalist { background: #feff9c; color: #000; border: 3px solid #000; border-radius: 0; font-weight: 800; box-shadow: 5px 5px 0px #000; }
+.toast-theme-brutalist .toast-prompt-btn { background: #fff; border: 2px solid #000; color: #000; font-weight: 800; border-radius: 0; box-shadow: 2px 2px 0px #000; }
+.toast-theme-brutalist .toast-prompt-btn:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0px #000; }
+.toast-theme-sunset { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: #4a2840; }
 
-/* --- Theme 6: Neo-Brutalist --- */
-.toast-theme-brutalist { background: #feff9c; color: #000000; border: 3px solid #000000; border-radius: 0; font-weight: 700; box-shadow: 5px 5px 0px #000000; }
-.toast-theme-brutalist.toast-success { background: #67ff93; }
-.toast-theme-brutalist.toast-error { background: #ff6b6b; }
+/* NEW Theme 8: Arcade */
+.toast-theme-arcade {
+  background: #222; color: #ffea00; border: 4px solid #ff0055;
+  font-family: 'Press Start 2P', monospace; font-size: 10px; border-radius: 0;
+}
+.toast-theme-arcade .toast-prompt-btn {
+  background: #ff0055; color: #fff; border: none; font-family: 'Press Start 2P', monospace;
+  font-size: 8px; border-radius: 0; padding: 10px;
+}
+.toast-theme-arcade .toast-prompt-btn:hover { background: #00ffcc; color: #000; }
 
-/* --- Theme 7: Pastel Sunset --- */
-.toast-theme-sunset { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: #4a2840; border: 1px solid rgba(255,255,255,0.4); }
+/* NEW Theme 9: Hologram */
+.toast-theme-hologram {
+  background: rgba(0, 20, 40, 0.8); color: #00e5ff; border: 1px solid #00e5ff;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.4), inset 0 0 10px rgba(0, 229, 255, 0.2);
+  backdrop-filter: blur(5px);
+}
+.toast-theme-hologram .toast-prompt-btn {
+  background: transparent; color: #00e5ff; border: 1px solid #00e5ff; box-shadow: 0 0 5px rgba(0,229,255,0.3);
+}
+.toast-theme-hologram .toast-prompt-btn:hover { background: #00e5ff; color: #000; box-shadow: 0 0 15px rgba(0,229,255,0.8); }
+
+/* NEW Theme 10: Bubblegum */
+.toast-theme-bubblegum {
+  background: #ff9ceefa; color: #d63384; border: 3px solid #ff7eb3;
+  border-radius: 24px; font-weight: 700; box-shadow: 0 8px 0 #ff7eb3;
+}
+.toast-theme-bubblegum .toast-prompt-btn {
+  background: #fff; color: #d63384; border: 2px solid #ff7eb3; border-radius: 20px; font-weight: 800;
+}
+.toast-theme-bubblegum .toast-prompt-btn:active { transform: translateY(4px); box-shadow: none; }
